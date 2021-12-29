@@ -1,3 +1,5 @@
+const { spawn } = require('child_process');
+
 let serial_ports = []
     //const os = require('os')
 
@@ -41,4 +43,42 @@ $('#logports').click(event => {
 $('#upload_but').click((o) => {
     $("#asveduma").empty()
     $("#asveduma").append(button_uploading)
+
+    const child = spawn('sleep', ['2'])
+
+    console.log(child)
+
+    child.on('exit', (code, signal) => {
+        console.log('child process exited with ' +
+            `code ${code} and signal ${signal}`);
+    })
+
+    child.stdout.on('data', (data) => {
+        console.log(`child stdout:\n${data}`);
+    })
 })
+
+$('#serial_port_button').click(o => {
+
+    $('#model-items').empty()
+    const list_group = $("#model-items").append(`<ul class="list-group"></ul>`)
+
+    chrome.serial.getDevices((ports) => {
+        ports.forEach((p, index) => {
+            console.log(p)
+                //if (p.displayName)
+            serial_ports.push(p)
+
+            list_group.append(`
+            <li class="list-group-item">
+            <button type="button" class="btn btn-primary" onclick="serial_activate(${index})">
+                ${p.path} 
+            </button>
+            </li>`)
+        })
+    })
+})
+
+const serial_activate = (n) => {
+    console.log(`choosed port num ${n}`)
+}
