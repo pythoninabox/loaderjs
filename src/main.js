@@ -1,4 +1,8 @@
+const win = nw.Window.get();
 const { spawn } = require('child_process');
+
+win.width = 600
+win.height = 480
 
 let serial_ports = []
     //const os = require('os')

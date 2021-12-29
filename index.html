@@ -11,35 +11,52 @@
         .row {
             padding: 20px;
         }
+        
+        @font-face {
+            font-family: "circuit";
+            src: url("electronic_highway_sign/EHSMB.TTF");
+        }
+        
+        h1 {
+            font-family: 'circuit', Arial, sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            font-size: 2em;
+        }
+        
+        body {
+            font-family: 'circuit', Arial, sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            font-size: 2em;
+        }
+        
+        input {
+            font-size: 1em;
+        }
     </style>
 </head>
 
 <body>
     <div class="container-sm">
-        <div class="row justify-content-center">
-            <div class="col-6">
-                <h1 class="text-center">Python in a Box</h1>
+        <div class="row justify-content-center p-1">
+            <div class="col">
+                <h1 class="text-center fw-bolder">Python in a Box</h1>
             </div>
         </div>
 
         <div class="row justify-content-center">
             <div class='col-4 text-center'>
-                <button id="serial_port_button" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button id="serial_port_button" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Serial Port 
                 </button>
             </div>
         </div>
 
         <div class="row justify-content-center">
-            <div class='col-4 text-center'>
-                <button id="logports" type="button" class="btn btn-primary btn-sm">Small button</button>
-            </div>
-        </div>
-
-        <div class="row justify-content-center">
-            <div class='col-8 text-center'>
+            <div class='col-12 text-center'>
                 <div class="input-group mb-3">
-                    <input type="file" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                    <input style="font-size: 0.75em;" type="file" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
                 </div>
             </div>
         </div>
