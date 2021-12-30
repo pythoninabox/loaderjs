@@ -1,14 +1,14 @@
 {
-    "name": "nw_ex",
+    "name": "loaderjs",
     "version": "1.0.0",
     "description": "",
     "main": "index.html",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
+    "chromium-args": "--enable-node-worker",
     "author": "",
     "license": "ISC",
-    "dependencies": {
-        "serialport": "^9.2.8"
-    }
+    "dependencies": {},
+    "devDependencies": {}
 }

@@ -72,9 +72,15 @@
 
         <div id="asveduma" class="row justify-content-center">
             <div class='col-4 text-center'>
-                <button id="upload_but" type="button" class="btn btn-primary" enabled>
+                <button id="upload_but" type="button" class="btn btn-primary" disabled>
                     Upload
                 </button>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class='col-12 text-center'>
+                <div id="message"></div>
             </div>
         </div>
     </div>
@@ -96,6 +102,10 @@
         </div>
     </div>
 
+    <script>
+        const pyloader = nw.require('src/pyloader.js')
+        global.pyloader = pyloader
+    </script>
     <script type="text/javascript" src="src/main.js"></script>
 </body>
 

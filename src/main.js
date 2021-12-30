@@ -1,5 +1,6 @@
 const win = nw.Window.get()
 const { spawn } = require('child_process')
+const py = global.pyloader
 
 win.width = 600
 win.height = 480
@@ -49,10 +50,8 @@ $('#upload_but').click((o) => {
     $("#asveduma").empty()
     $("#asveduma").append(button_uploading)
 
-    const child = spawn('sleep', ['2'])
-
-    console.log(child)
-
+    //const child = spawn(py.ESPTOOL, py.ERASE_ARGS)
+    const child = spawn("pip3.9", ['install', '--upgrade', 'pip'])
     child.on('exit', (code, signal) => {
         console.log('child process exited with ' +
             `code ${code} and signal ${signal}`)
@@ -64,12 +63,13 @@ $('#upload_but').click((o) => {
 })
 
 $('#serial_port_button').click(o => {
-
+    flashop()
     $('#model-items').empty()
     const list_group = $("#model-items").append(`<ul class="list-group"></ul>`)
 
     chrome.serial.getDevices((ports) => {
-        ports.forEach((p, index) => {
+        let index = 0
+        ports.forEach((p) => {
             console.log(p)
             if (p.displayName) {
                 serial_ports.push(p)
@@ -81,6 +81,7 @@ $('#serial_port_button').click(o => {
                     </button>
                     </li>
                 `)
+                index++
             }
         })
         if (!serial_ports.length) {
@@ -95,13 +96,50 @@ $('#serial_port_button').click(o => {
 })
 
 $('#firmware_path').change(() => {
-    console.log($(this))
     const filepath = document.getElementById('firmware_path').value
     data.firmwarePath = filepath
+    console.log("calling check")
+    check_all_data()
 })
 
 const serial_activate = (n) => {
     const index = parseInt(n)
     console.log(`choosed port num ${index}`)
-    data.serialPath = serial_ports[index]
+    console.log("lista seriali:", serial_ports[0])
+    data.serialPath = serial_ports[index].path
+    console.log("appena popolato:", data.serialPath)
+}
+
+const check_all_data = () => {
+    console.log("checked")
+    console.log(serial_ports)
+    if (data.serialPath && data.firmwarePath) {
+        const but = $('#upload_but') //document.getElementById('upload_but') 
+        but.removeAttr('disabled')
+        but.attr('enabled', '')
+        console.log(but[0])
+    }
+}
+
+const flashop = () => {
+    const child = spawn("python3.9", ['-m', 'venv', 'venv'])
+
+    const message = $('#message')
+    message.text("creating python env...")
+
+    child.on('exit', (code, signal) => {
+        if (code == 0) {
+            const child2 = spawn('venv/bin/pip', ['install', 'esptool'])
+            message.text("install esptool...")
+
+            child2.on('exit', (code2, signal2) => {
+                if (code2 == 0) {
+
+                    const child3 = spawn('venv/bin/python', ['-m', 'esptool', '-h'])
+                    message.text("erasing flash...")
+                    console.log("DONE")
+                }
+            })
+        }
+    })
 }
