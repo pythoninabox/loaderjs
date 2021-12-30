@@ -1,14 +1,15 @@
-const win = nw.Window.get();
-const { spawn } = require('child_process');
+const win = nw.Window.get()
+const { spawn } = require('child_process')
 
 win.width = 600
 win.height = 480
 
 let serial_ports = []
-    //const os = require('os')
 
-//var fileinput = $('#button-addon1')
-//var path = fileinput.value
+const data = {
+    firmwarePath: null,
+    serialPath: null
+}
 
 const button_uploading = `
 <div class='col-4 text-center'>
@@ -54,11 +55,11 @@ $('#upload_but').click((o) => {
 
     child.on('exit', (code, signal) => {
         console.log('child process exited with ' +
-            `code ${code} and signal ${signal}`);
+            `code ${code} and signal ${signal}`)
     })
 
     child.stdout.on('data', (data) => {
-        console.log(`child stdout:\n${data}`);
+        console.log(`child stdout:\n${data}`)
     })
 })
 
@@ -70,19 +71,37 @@ $('#serial_port_button').click(o => {
     chrome.serial.getDevices((ports) => {
         ports.forEach((p, index) => {
             console.log(p)
-                //if (p.displayName)
-            serial_ports.push(p)
+            if (p.displayName) {
+                serial_ports.push(p)
 
-            list_group.append(`
-            <li class="list-group-item">
-            <button type="button" class="btn btn-primary" onclick="serial_activate(${index})">
-                ${p.path} 
-            </button>
-            </li>`)
+                list_group.append(`
+                    <li class="list-group-item">
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary" onclick="serial_activate(${index})">
+                        ${p.path} 
+                    </button>
+                    </li>
+                `)
+            }
         })
+        if (!serial_ports.length) {
+            list_group.append(`
+                    <li class="list-group-item"> 
+                        <p class='fw-bolder'>No Devices Available</p> 
+                        <p>please connect a device</p>  
+                    </li>
+                `)
+        }
     })
 })
 
+$('#firmware_path').change(() => {
+    console.log($(this))
+    const filepath = document.getElementById('firmware_path').value
+    data.firmwarePath = filepath
+})
+
 const serial_activate = (n) => {
-    console.log(`choosed port num ${n}`)
+    const index = parseInt(n)
+    console.log(`choosed port num ${index}`)
+    data.serialPath = serial_ports[index]
 }

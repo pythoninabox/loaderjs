@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>My OS Platform</title>
+    <title>Python in a box</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js" integrity="sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w==" crossorigin="anonymous" referrerpolicy="no-referrer"
@@ -14,7 +14,12 @@
         
         @font-face {
             font-family: "circuit";
-            src: url("electronic_highway_sign/EHSMB.TTF");
+            src: url("fonts/led_board/LEDBDREV.TTF");
+        }
+        
+        @font-face {
+            font-family: "electric";
+            src: url("fonts/Elronmonospace.ttf");
         }
         
         h1 {
@@ -25,14 +30,18 @@
         }
         
         body {
-            font-family: 'circuit', Arial, sans-serif;
+            font-family: 'electric', Arial, sans-serif;
             font-weight: normal;
             font-style: normal;
-            font-size: 2em;
+            font-size: 1em;
         }
         
         input {
             font-size: 1em;
+        }
+        
+        #maintitle {
+            padding: 40px;
         }
     </style>
 </head>
@@ -40,7 +49,7 @@
 <body>
     <div class="container-sm">
         <div class="row justify-content-center p-1">
-            <div class="col">
+            <div id="maintitle" class="col">
                 <h1 class="text-center fw-bolder">Python in a Box</h1>
             </div>
         </div>
@@ -56,7 +65,7 @@
         <div class="row justify-content-center">
             <div class='col-12 text-center'>
                 <div class="input-group mb-3">
-                    <input style="font-size: 0.75em;" type="file" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                    <input id="firmware_path" style="font-size: 0.75em;" name="mbuto" type="file" accept='.bin' class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
                 </div>
             </div>
         </div>
