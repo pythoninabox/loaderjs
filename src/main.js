@@ -6,18 +6,18 @@ win.width = 800
 win.height = 600
 win.setResizable(false)
 
-var your_menu = new nw.Menu({ type: 'menubar' });
-var submenu = new nw.Menu();
-submenu.append(new nw.MenuItem({ label: 'Item A' }));
-submenu.append(new nw.MenuItem({ label: 'Item B' }));
+var your_menu = new nw.Menu({ type: 'menubar' })
+var submenu = new nw.Menu()
+submenu.append(new nw.MenuItem({ label: 'Item A' }))
+submenu.append(new nw.MenuItem({ label: 'Item B' }))
 
 // the menu item appended should have a submenu
 your_menu.append(new nw.MenuItem({
     label: 'Help',
     submenu: submenu
-}));
+}))
 
-win.menu = your_menu;
+win.menu = your_menu
 
 let serial_ports = []
 
@@ -78,35 +78,37 @@ $('#upload_but').click((o) => {
 
 $('#serial_port_button').click(o => {
     flashop()
-    $('#model-items').empty()
-    const list_group = $("#model-items").append(`<ul class="list-group"></ul>`)
+        /*
+        $('#model-items').empty()
+        const list_group = $("#model-items").append(`<ul class="list-group"></ul>`)
 
-    chrome.serial.getDevices((ports) => {
-        let index = 0
-        ports.forEach((p) => {
-            console.log(p)
-            if (p.displayName) {
-                serial_ports.push(p)
+        chrome.serial.getDevices((ports) => {
+            let index = 0
+            ports.forEach((p) => {
+                console.log(p)
+                if (p.displayName) {
+                    serial_ports.push(p)
 
+                    list_group.append(`
+                        <li class="list-group-item">
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-primary" onclick="serial_activate(${index})">
+                            ${p.path} 
+                        </button>
+                        </li>
+                    `)
+                    index++
+                }
+            })
+            if (!serial_ports.length) {
                 list_group.append(`
-                    <li class="list-group-item">
-                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary" onclick="serial_activate(${index})">
-                        ${p.path} 
-                    </button>
-                    </li>
-                `)
-                index++
+                        <li class="list-group-item"> 
+                            <p class='fw-bolder'>No Device Available</p> 
+                            <p>please connect one</p>  
+                        </li>
+                    `)
             }
         })
-        if (!serial_ports.length) {
-            list_group.append(`
-                    <li class="list-group-item"> 
-                        <p class='fw-bolder'>No Device Available</p> 
-                        <p>please connect one</p>  
-                    </li>
-                `)
-        }
-    })
+        */
 })
 
 $('#firmware_path').change(() => {
@@ -136,6 +138,26 @@ const check_all_data = () => {
 }
 
 const flashop = () => {
+    const re = /^==>/
+
+    const child = spawn("./test.sh")
+    const message = $('#message')
+
+    child.stdout.on('data', (data) => {
+        console.log(`${data}`)
+        const d = `${data}`
+        if (re.test(d))
+            message.text(d)
+    })
+
+    child.on('exit', (code, signal) => {
+        console.log('child process exited with ' +
+            `code ${code} and signal ${signal}`)
+    })
+}
+
+/*
+const flashop = () => {
     const child = spawn("python3.9", ['-m', 'venv', 'venv'])
 
     const message = $('#message')
@@ -157,3 +179,4 @@ const flashop = () => {
         }
     })
 }
+*/
