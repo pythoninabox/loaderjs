@@ -19,14 +19,14 @@
         
         @font-face {
             font-family: "electric";
-            src: url("fonts/Elronmonospace.ttf");
+            src: url("fonts/modern_typewriter/MODERN TYPEWRITER.ttf");
         }
         
         h1 {
             font-family: 'circuit', Arial, sans-serif;
             font-weight: normal;
             font-style: normal;
-            font-size: 2em;
+            font-size: 3em;
         }
         
         body {
@@ -34,6 +34,7 @@
             font-weight: normal;
             font-style: normal;
             font-size: 1em;
+            background: #b38600;
         }
         
         input {
@@ -55,8 +56,8 @@
         </div>
 
         <div class="row justify-content-center">
-            <div class='col-4 text-center'>
-                <button id="serial_port_button" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <div class='col-12 text-center'>
+                <button id="serial_port_button" style="font-size: 2em;" type="button" class="btn btn-warning rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Serial Port 
                 </button>
             </div>
@@ -65,14 +66,14 @@
         <div class="row justify-content-center">
             <div class='col-12 text-center'>
                 <div class="input-group mb-3">
-                    <input id="firmware_path" style="font-size: 0.75em;" name="mbuto" type="file" accept='.bin' class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                    <input id="firmware_path" style="font-size: 1em;" name="mbuto" type="file" accept='.bin' class="form-control" placeholder="bin file" aria-label="Example text with button addon" aria-describedby="button-addon1">
                 </div>
             </div>
         </div>
 
         <div id="asveduma" class="row justify-content-center">
             <div class='col-4 text-center'>
-                <button id="upload_but" type="button" class="btn btn-primary" disabled>
+                <button id="upload_but" type="button" class="btn btn-warning rounded-pill" disabled>
                     Upload
                 </button>
             </div>
@@ -90,7 +91,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Serial ports</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div id="model-items" class="modal-body"></div>

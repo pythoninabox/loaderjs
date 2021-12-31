@@ -2,8 +2,22 @@ const win = nw.Window.get()
 const { spawn } = require('child_process')
 const py = global.pyloader
 
-win.width = 600
-win.height = 480
+win.width = 800
+win.height = 600
+win.setResizable(false)
+
+var your_menu = new nw.Menu({ type: 'menubar' });
+var submenu = new nw.Menu();
+submenu.append(new nw.MenuItem({ label: 'Item A' }));
+submenu.append(new nw.MenuItem({ label: 'Item B' }));
+
+// the menu item appended should have a submenu
+your_menu.append(new nw.MenuItem({
+    label: 'Help',
+    submenu: submenu
+}));
+
+win.menu = your_menu;
 
 let serial_ports = []
 
@@ -87,8 +101,8 @@ $('#serial_port_button').click(o => {
         if (!serial_ports.length) {
             list_group.append(`
                     <li class="list-group-item"> 
-                        <p class='fw-bolder'>No Devices Available</p> 
-                        <p>please connect a device</p>  
+                        <p class='fw-bolder'>No Device Available</p> 
+                        <p>please connect one</p>  
                     </li>
                 `)
         }
