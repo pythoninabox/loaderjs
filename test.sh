@@ -2,6 +2,8 @@
 
 DIRVENV=nwvenv
 status=0 
+SERIALPORT=$1
+FIRMWARE=$2
 
 if [[ -d $DIRVENV ]]
 then
@@ -11,7 +13,6 @@ else
     status=1
     python3 -m venv nwvenv
 fi
-echo "==> GO FORWARD"
 source nwvenv/bin/activate
 
 if [ $status -eq 1 ]
@@ -24,7 +25,7 @@ fi
 #python3 -c "import sys; print('executable:', sys.executable)"
 #which esptool.py
 echo "==> ERASING FLASH" 
-sleep 2
+esptool.py --chip esp32 --port $SERIALPORT erase_flash
 echo "==> UPDATING FLASH"
-sleep 2
+esptool.py --chip esp32 --port $SERIALPORT --baud 460800 write_flash -z 0x1000 $FIRMWARE
 echo "==> DONE"

@@ -39,14 +39,10 @@ const button_uploading = `
 
 const button_pre_upload = `
 <div class='col-4 text-center'>
-    <button id="upload_but" type="button" class="btn btn-primary disabled">
+    <button id="upload_but" type="button" class="btn btn-primary enabled">
         Upload
     </button>
-</div>`;
-
-const enable_loader_button = () => {
-    $("#upload_but");
-};
+</div>`
 
 $("#mainbutton").click((event) => {
     serial_ports = [];
@@ -57,61 +53,41 @@ $("#mainbutton").click((event) => {
     });
 });
 
-$("#logports").click((event) => {
-    console.log(serial_ports);
-});
 
 $("#upload_but").click((o) => {
-    $("#asveduma").empty();
-    $("#asveduma").append(button_uploading);
-
-    //const child = spawn(py.ESPTOOL, py.ERASE_ARGS)
-    const child = spawn("pip3.9", ["install", "--upgrade", "pip"]);
-    child.on("exit", (code, signal) => {
-        console.log(
-            "child process exited with " + `code ${code} and signal ${signal}`
-        );
-    });
-
-    child.stdout.on("data", (data) => {
-        console.log(`child stdout:\n${data}`);
-    });
+    uploading()
 });
 
 $("#serial_port_button").click((o) => {
-    //helpwindow.create_help();
-    flashop();
-    /*
-        $('#model-items').empty()
-        const list_group = $("#model-items").append(`<ul class="list-group"></ul>`)
+    $('#model-items').empty()
+    const list_group = $("#model-items").append(`<ul class="list-group"></ul>`)
 
-        chrome.serial.getDevices((ports) => {
-            let index = 0
-            ports.forEach((p) => {
-                console.log(p)
-                if (p.displayName) {
-                    serial_ports.push(p)
+    chrome.serial.getDevices((ports) => {
+        let index = 0
+        ports.forEach((p) => {
+            console.log(p)
+            if (p.displayName) {
+                serial_ports.push(p)
 
-                    list_group.append(`
+                list_group.append(`
                         <li class="list-group-item">
                         <button type="button" data-bs-dismiss="modal" class="btn btn-primary" onclick="serial_activate(${index})">
                             ${p.path} 
                         </button>
                         </li>
                     `)
-                    index++
-                }
-            })
-            if (!serial_ports.length) {
-                list_group.append(`
+                index++
+            }
+        })
+        if (!serial_ports.length) {
+            list_group.append(`
                         <li class="list-group-item"> 
                             <p class='fw-bolder'>No Device Available</p> 
                             <p>please connect one</p>  
                         </li>
                     `)
-            }
-        })
-        */
+        }
+    })
 });
 
 $("#firmware_path").change(() => {
@@ -140,10 +116,10 @@ const check_all_data = () => {
     }
 };
 
-const flashop = () => {
+const flashop = (serialdev, firmwarepath) => {
     const re = /^==>/;
 
-    const child = spawn("./test.sh");
+    const child = spawn("./test.sh", [serialdev, firmwarepath]);
     const message = $("#message");
 
     child.stdout.on("data", (data) => {
@@ -153,33 +129,20 @@ const flashop = () => {
     });
 
     child.on("exit", (code, signal) => {
-        console.log(
-            "child process exited with " + `code ${code} and signal ${signal}`
-        );
+        if (code == 0) {
+            $("#asveduma").empty();
+            $("#asveduma").append(button_pre_upload);
+
+            $("#upload_but").click((o) => {
+                uploading()
+            });
+        }
     });
 };
 
-/*
-const flashop = () => {
-    const child = spawn("python3.9", ['-m', 'venv', 'venv'])
-
-    const message = $('#message')
-    message.text("creating python env...")
-
-    child.on('exit', (code, signal) => {
-        if (code == 0) {
-            const child2 = spawn('venv/bin/pip', ['install', 'esptool'])
-            message.text("install esptool...")
-
-            child2.on('exit', (code2, signal2) => {
-                if (code2 == 0) {
-
-                    const child3 = spawn('venv/bin/python', ['-m', 'esptool', '-h'])
-                    message.text("erasing flash...")
-                    console.log("DONE")
-                }
-            })
-        }
-    })
+const uploading = () => {
+    $("#message").text("");
+    $("#asveduma").empty();
+    $("#asveduma").append(button_uploading);
+    flashop(data.serialPath, data.firmwarePath)
 }
-*/
